@@ -3,13 +3,16 @@ import axiosInstance from './utils/fetch'
 
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faTrash, faCheckCircle, faPlusCircle, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTrash, faCheckCircle, faPlusCircle, faTrashAlt, faUndo} from '@fortawesome/free-solid-svg-icons'
+
 import './App.css'
 
+import { ReactSortable } from "react-sortablejs";
 
 const App = () => {
   const [list, setList] = useState([])
   const [selected, setSelected] = useState([])
+  const [completed, setCompleted] = useState()
   const [add, setAdd] = useState({})
 
   useEffect(() => {
@@ -23,7 +26,14 @@ const App = () => {
       axiosInstance.delete(`${selected[i]}/`)
     }
     window.location.reload()
-    
+  }
+
+  const handleCompleteSelected = (e) => {
+    for( let i = 0; i < selected.length; i++){
+      let data = {'completed': !completed}
+      axiosInstance.patch(`${selected[i]}/`, data)
+    }
+    window.location.reload()
   }
 
   const handleDelete= (id, e) => {
@@ -31,48 +41,54 @@ const App = () => {
       .then(window.location.reload())
   }
 
-  const handleComplete = (id, e) => {
-    e.preventDefault()
-    console.log(id)
-  }
-
   const handleSelect = (id, e) => {
     e.preventDefault()
-    setSelected([...selected, id])
+    return selected.includes(id) ?  setSelected(selected.filter((e)=>(e !== id))) : setSelected([...selected, id])
   }
-  console.log(selected)
-  
+
+  const handleCompleted = (id, completed, e) => {
+    let data = {'completed': !completed}
+    axiosInstance.patch(`${id}/`, data)
+      .then(window.location.reload())
+  }
+
   const handleCreate =  () => {
     axiosInstance.post('/', add)
       .then(window.location.reload())
       .catch(e => console.log(e))
   }
-
   return (
     <>
       <Wrapper>
+        <img src="https://i.ibb.co/xJB8CnB/logo.png" alt="logo" className="logo"/>
         <Title>ToDo</Title>
-        <FontAwesomeIcon icon={faTrashAlt} className="delete" onClick={e=> handleDeleteSelected(e)}/>
+        <div className={selected.length === 0 ? 'navbar-hide' : 'navbar'}>
+          <FontAwesomeIcon icon={faTrashAlt} className="delete-alt" onClick={e=> handleDeleteSelected(e)}/>
+          <FontAwesomeIcon icon={faCheck} className="delete-alt" onClick={e=> handleCompleteSelected(e)}/>
+        </div>
+
+
+      <ReactSortable list={list} setList={setList}>
+            {list.map( list => {
+            return(
+            <>
+              <div className="border">
+                <FontAwesomeIcon 
+                  icon={faCheckCircle} 
+                  className={selected.includes(list.id) ? 'left-found' : 'left'} 
+                  onClick={e=> handleSelect(list.id, e)}
+                />
+                <H key={list.id} className='' completed={list.completed}>{list.list}</H>
+                <FontAwesomeIcon icon={list.completed ? faUndo : faCheck} className="test" onClick={e => handleCompleted(list.id, list.completed, e)}/>
+                <FontAwesomeIcon icon={faTrash} className="test-2" onClick={e=> handleDelete(list.id, e)}/>
+              </div>
+            </>
+              )
+          })}
+      </ReactSortable>
+
+
         
-        {list.map( list => {
-          return(
-          <>
-          <div>
-          <div className="border">
-            <FontAwesomeIcon 
-              icon={faCheckCircle} 
-              className={selected.indexOf(list.id) === -1 ? 'left-found' : 'left'} 
-              onClick={e=> handleSelect(list.id, e)}
-            />
-            <H key={list.id} className=''>{list.list}</H>
-            <FontAwesomeIcon icon={faCheck} className="test" onClick={e=> handleComplete(list.id, e)}/>
-            <FontAwesomeIcon icon={faTrash} className="test-2" onClick={e=> handleDelete(list.id, e)}/>
-          </div>
-          </div>
-          </>
-            )
-        })
-      }
         <br></br>
         <input value={add.list} onChange={e => setAdd({list: e.target.value})}></input>
         <FontAwesomeIcon icon={faPlusCircle} className="delete" onClick={handleCreate}/>
@@ -86,9 +102,9 @@ const App = () => {
 export default App
 
 const Wrapper = styled.div`
-  max-width: 400px;
-  width: 100%;
-  margin: auto;
+  max-width: 700px;
+  width: 80%;
+  margin: 0 auto;
   background-color: #fff;
   border-radius: 16px;
   font-size: 15px;
@@ -105,10 +121,12 @@ const Title = styled.h1`
 `
 
 const H = styled.p`
-  font-size: 2.5em;
+  font-size: 2rem;
   text-align: left;
   display: inline;
-  color: #455963;
+  color: ${props => props.completed ? 'grey' : '455963'};
+  text-decoration: ${props => props.completed ? 'line-through' : 'none'};
+  
 `
 
 const ListItem = styled.p`
@@ -142,7 +160,7 @@ const Button = styled.button`
 
 const DoneButton = styled.button`
   color: red;
-  background: yelow;
+  background: yellow;
   border-radius: 10px;
   outline: none;
   border: none;
@@ -160,3 +178,5 @@ const DeleteButton = styled.button`
   height: 25px;
   width: 60px;
 `
+
+
