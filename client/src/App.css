@@ -45,6 +45,11 @@ div.border{
   margin-top: 15px;
 }
 
+.test:hover ,.test-2:hover{
+  color: #A3E3E9;
+
+}
+
 .test-2{
   float: right;
   margin-right: 15px;
@@ -63,7 +68,7 @@ div.border{
   float:left;
   margin-top: 15px;
   margin-right: 15px;
-  color: rgb(165, 165, 165);
+  color: #A3E3E9;
 }
 
 
@@ -73,13 +78,58 @@ input{
   border-radius: 2.5rem;
   margin-right: 10px;
   margin-left: 20px;
+  font-family: 'DM Sans', sans-serif;
+  padding-left: 5%;
+  border: 3px solid #455963;
 }
 
-input:hover, input::selection, input:active{
+input:hover, input:focus, input:active{
   outline: none;
 }
 
 .delete{
   font-size: 20px;
+}
+
+.delete-alt{
+  font-size: 20px;
+  margin: 0 auto;
   margin-left: 15px;
+  color: white;
+}
+
+div.navbar{
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  width: 40%;
+  background: rgba(77, 77, 77, 0.5);
+  padding: 15px;
+  border-radius: 2.5em;
+  margin-bottom: 35px;
+  opacity: 1;
+}
+
+div.navbar-hide{
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  background: grey;
+  width: 50%;
+  padding: 15px;
+  border-radius: 2.5em;
+  margin-bottom: 35px;
+  opacity: 0;
+
+}
+
+::selection {
+  background-color: #352e7e;
+  color: #fff;
+}
+
+.logo{
+  width: 50%;
+  display: block;
+  margin: 0 auto;
 }
