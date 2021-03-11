@@ -3,7 +3,7 @@ import axiosInstance from './utils/fetch'
 
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTrash, faCheckCircle, faPlusCircle, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 
@@ -40,6 +40,7 @@ const App = () => {
     e.preventDefault()
     setSelected([...selected, id])
   }
+  console.log(selected)
   
   const handleCreate =  () => {
     axiosInstance.post('/', add)
@@ -51,17 +52,22 @@ const App = () => {
     <>
       <Wrapper>
         <Title>ToDo</Title>
-        <button onClick={e=> handleDeleteSelected(e)}>delete</button>
+        <FontAwesomeIcon icon={faTrashAlt} className="delete" onClick={e=> handleDeleteSelected(e)}/>
         
         {list.map( list => {
           return(
           <>
           <div>
-          <button onClick={e=> handleSelect(list.id, e)}>select</button>
-
-          <H key={list.id}>{list.list}</H>
-          <FontAwesomeIcon icon={faCheck} onClick={e=> handleComplete(list.id, e)}/>
-          <FontAwesomeIcon icon={faTrash} onClick={e=> handleDelete(list.id, e)}/>
+          <div className="border">
+            <FontAwesomeIcon 
+              icon={faCheckCircle} 
+              className={selected.indexOf(list.id) === -1 ? 'left-found' : 'left'} 
+              onClick={e=> handleSelect(list.id, e)}
+            />
+            <H key={list.id} className=''>{list.list}</H>
+            <FontAwesomeIcon icon={faCheck} className="test" onClick={e=> handleComplete(list.id, e)}/>
+            <FontAwesomeIcon icon={faTrash} className="test-2" onClick={e=> handleDelete(list.id, e)}/>
+          </div>
           </div>
           </>
             )
@@ -69,7 +75,8 @@ const App = () => {
       }
         <br></br>
         <input value={add.list} onChange={e => setAdd({list: e.target.value})}></input>
-        <button onClick={handleCreate}>Add</button>
+        <FontAwesomeIcon icon={faPlusCircle} className="delete" onClick={handleCreate}/>
+
 
       </Wrapper>
     </>
