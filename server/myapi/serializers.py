@@ -5,4 +5,4 @@ from .models import List
 class ListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = List
-        fields = ('id','list',)
+        fields = ('id','list','completed')
