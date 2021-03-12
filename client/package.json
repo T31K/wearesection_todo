@@ -18,6 +18,7 @@
     "react-scripts": "4.0.3",
     "react-sortablejs": "^6.0.0",
     "sortablejs": "^1.13.0",
+    "standard": "^16.0.3",
     "styled-components": "^5.2.1",
     "web-vitals": "^1.1.0"
   },
