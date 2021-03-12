@@ -6,10 +6,10 @@ $ npm start
 ```
 
 ## Dependecies/frameworks used
-[x] StandardJS formatting
-[x] Sortablejs
-[x] Styled components
-[x] Axios
-[x] React Bootstrap
-[x] Font Awesome
+- [x] Sortablejs
+- [x] Styled components
+- [x] Axios
+- [x] React Bootstrap
+- [x] Font Awesome
 
+## Code standard: StandardJS
