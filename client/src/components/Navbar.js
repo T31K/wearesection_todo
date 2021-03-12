@@ -1,41 +1,40 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faTrash, faCheckCircle, faPlusCircle, faTrashAlt, faUndo} from '@fortawesome/free-solid-svg-icons'
 import axiosInstance from '../utils/fetch'
-import styled from 'styled-components'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+
+import styled from 'styled-components'
 import { Wrapper } from '../styles/Wrapper'
 
 const Navbar = (selected, completed) => {
-
   const handleDeleteSelected = (e) => {
-    for( let i = 0; i < selected.selected.length; i++){
+    for (let i = 0; i < selected.selected.length; i++) {
       axiosInstance.delete(`${selected.selected[i]}/`)
     }
     window.location.reload()
   }
 
   const handleCompleteSelected = (e) => {
-    for( let i = 0; i < selected.selected.length; i++){
-      let data = {'completed': !selected.completed}
+    for (let i = 0; i < selected.selected.length; i++) {
+      let data = { completed: true }
       axiosInstance.patch(`${selected.selected[i]}/`, data)
     }
     window.location.reload()
   }
 
-  return(
+  return (
     <>
-      <img src="https://i.ibb.co/xJB8CnB/logo.png" alt="logo" className="logo"/>
-      <Title>ToDo</Title>     
+      <img src='https://i.ibb.co/xJB8CnB/logo.png' alt='logo' className='logo' />
+      <Title>ToDo</Title>
       <NavWrapper selected={selected}>
         <ControlButton icon={faTrashAlt} onClick={e => handleDeleteSelected(e)} />
-        <ControlButton icon={faCheck} onClick={e => handleCompleteSelected(e)} />
+        <ControlButton icon={faCheckCircle} onClick={e => handleCompleteSelected(e)} />
       </NavWrapper>
     </>
   )
 }
 
 export default Navbar
-
 
 const NavWrapper = styled(Wrapper)`
   display: block;

@@ -1,13 +1,13 @@
-import { React, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axiosInstance from './utils/fetch'
 
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faTrash, faCheckCircle, faPlusCircle, faTrashAlt, faUndo} from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTrash, faCheckCircle, faUndo } from '@fortawesome/free-solid-svg-icons'
 
 import './App.css'
 
-import { ReactSortable } from "react-sortablejs"
+import { ReactSortable } from 'react-sortablejs'
 import { Wrapper } from './styles/Wrapper'
 
 import Navbar from './components/Navbar'
@@ -24,23 +24,21 @@ const App = () => {
       .catch(err => console.log(err))
   }, [])
 
-  const handleDelete= (id, e) => {
+  const handleDelete = (id, e) => {
     axiosInstance.delete(`${id}/`)
       .then(window.location.reload())
   }
 
   const handleSelect = (id, e) => {
     e.preventDefault()
-    return selected.includes(id) ?  setSelected(selected.filter((e)=>(e !== id))) : setSelected([...selected, id])
+    return selected.includes(id) ?  setSelected(selected.filter((e) => (e !== id))) : setSelected([...selected, id])
   }
 
-  const handleCompleted = (id, completed, e) => {
-    let data = {'completed': !completed}
+  const handleCompleted = (id, complete, e) => {
+    const data = { completed: !complete}
     axiosInstance.patch(`${id}/`, data)
       .then(window.location.reload())
   }
-
-
 
   return (
     <>

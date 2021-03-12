@@ -1,27 +1,26 @@
-import axiosInstance from '../utils/fetch'
 import { useState } from 'react'
+import axiosInstance from '../utils/fetch'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faTrash, faCheckCircle, faPlusCircle, faTrashAlt, faUndo} from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 import styled from 'styled-components'
 import { Input } from '../styles/Input'
 import { Wrapper } from '../styles/Wrapper'
 
 const Inputbar = () => {
+  const [add, setAdd] = useState({})
 
- const [add, setAdd] = useState({})
- 
-  const handleCreate =  () => {
+  const handleCreate = () => {
     axiosInstance.post('/', add)
       .then(window.location.reload())
       .catch(e => console.log(e))
   }
 
-  return(
+  return (
     <InputWrapper>
-      <Input value={add.list} onChange={e => setAdd({list: e.target.value})}></Input >
-      <AddButton icon={faPlusCircle} className='add' onClick={handleCreate}/>
+      <Input value={add.list} onChange={e => setAdd({ list: e.target.value })} />
+      <AddButton icon={faPlusCircle} className='add' onClick={handleCreate} />
     </InputWrapper>
   )
 }
